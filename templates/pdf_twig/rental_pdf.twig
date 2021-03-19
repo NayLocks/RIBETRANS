@@ -1,0 +1,449 @@
+{% set monthFormat = {"01": "Janvier", "02": "Février", "03": "Mars", "04": "Avril", "05": "Mai", "06": "Juin", "07": "Juillet", "08": "Août", "09": "Septembre", "10": "Octobre", "11": "Novembre", "12": "Décembre"} %}
+<html>
+<head>
+    <style type="text/css">
+
+        body {
+            font-family: sans-serif;
+            margin: 0.5cm 0;
+            text-align: justify;
+            font-size: 15px;
+        }
+
+        #header{
+            position: relative;
+            top: -30px;
+            left: 0;
+            right: 0;
+        }
+
+        #footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            font-size: 0.9em;
+        }
+
+        #footer {
+            bottom: 10px;
+            border-top: 3px solid black;
+            padding-top: 5px;
+        }
+
+        #header table,
+        #footer table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+        }
+
+        #header td,
+        #footer td {
+            padding: 0;
+            width: 50%;
+        }
+
+        .page-number {
+            text-align: right;
+        }
+
+        .page-number:before {
+            content: "Page " counter(page) " sur 5";
+        }
+
+        hr {
+            page-break-after: always;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="section section1">
+    <div id="header">
+        <img src="{{ app.request.getSchemeAndHttpHost() ~ asset('img/en_tete.jpg') }}" width="100%" alt="logo">
+        <h1 style="text-align: center">CONTRAT DE LOCATION</h1>
+    </div>
+    <div id="footer">
+        <div class="page-number"></div>
+    </div>
+    <div>
+        <p>
+            Entre les soussignés :
+        </p>
+        <p style="margin-left: 30px;">
+            <strong>{{ company.name }}</strong> au capital de 200 000,00 € représentée par <strong>{{ company.director }}, {{ company.wording }}</strong>
+        </p>
+        <p style="margin-left: 30px;">
+            N° SIRET : <strong>{{ company.siret }}</strong><br>
+            Certificat d'inscription au registre : B 380180141 17/12/90 Compiègne<br>
+            Des Transporteurs routiers de marchandises,<br>
+            Des loueurs de véhicules industriels en date du 12/07/1994.<br>
+        </p>
+        <div style="margin-left: 30px; float: left">
+            Dont le siège social est à
+        </div>
+        <div style="float: left; margin-left: 10px;">
+            <strong>{{ company.city }} ({{ company.postalCode }})<br>{{ company.street }}, {{ company.streetSupplement }}</strong>
+        </div>
+        <br>
+        <br>
+        <p>
+            Et :
+        </p>
+        <p style="margin-left: 30px;">
+            La société <strong>{{ rental.company.name }}</strong><br>
+            représentée par <strong>{{ rental.company.title }} {{ rental.company.director }}, {{ rental.company.wording }}</strong><br>
+            N° SIRET : <strong>{{ rental.company.siret }}</strong><br>
+        </p>
+        <div style="margin-left: 30px; float: left">
+            Dont le siège social est à
+        </div>
+        <div style="float: left; margin-left: 10px;">
+            <strong>{{ rental.company.city }} ({{ rental.company.postalCode }})<br>{{ rental.company.street }}, {{ rental.company.streetSupplement }}</strong>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div style="float: left;margin-left: 20px">
+            Il a été convenue ce qui suit :<br><br>
+            Location du véhicule<br>
+            Immatriculé<br>
+            Marque<br>
+            Type<br>
+            Genre<br>
+            N° Parc<br>
+            Groupe Froid<br>
+            Hayon élévateur<br>
+            Porte Arrière<br>
+        </div>
+        <div style="float: left">
+            <br><br>
+            <br>
+            : <br>
+            : <br>
+            : <br>
+            : <br>
+            : <br>
+            : <br>
+            : <br>
+            : <br>
+        </div>
+        <div style="float: left">
+            <br><br>
+            <br>
+            <strong>{{ rental.vehicle.numberPlate }}</strong><br>
+            <strong>{{ rental.vehicle.brand.name }}</strong><br>
+            <strong>{{ rental.vehicle.type.name }}</strong><br>
+            <strong>{{ rental.vehicle.kind.name }}</strong><br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+<hr/>
+
+<div class="section section2">
+    <div id="header">
+        <p style="text-align: center; top: -30px;">Conditions de location et d'entretien en « Full service »</p>
+    </div>
+    <div id="footer">
+        <div class="page-number"></div>
+    </div>
+    <p>
+        1) L’entretien : Ce poste comprend aussi bien les entretiens courants, vidange, graissage,
+        remplacement des plaquettes, disques, étriers, garnitures de freins, remplacement et contrôle sur
+        circuit électrique, contrôles généraux, vérifications, etc…, ainsi que l’entretien préventif tel que
+        pour les équipements frigorifiques et les équipements hydrauliques des hayons élévateurs et
+        pneumatiques de la porte arrière.
+    </p>
+
+    <p>
+        2) L’ensemble des réparations et remises en état, tous les travaux de carrosserie, tôlerie,
+        peinture, collage de logos publicitaires, les réfections et remplacements de tous les éléments
+        mécaniques (moteur, boîte de vitesse, transmission, chassis), sont à la charge de {{ company.name }} et
+        effectués par notre atelier, ou sont sous-traités auprès de spécialistes agréés, dans la mesure
+        d’une usure normale.
+    </p>
+
+    <p>
+        3) En cas de panne sur la route, un mécanicien {{ company.name }} est missionné et répare sur place.
+        En cas d’impossibilité, il s’occupe de faire rapatrier le véhicule à l’atelier. Les prises en charge
+        de remorquage sont à la charge de {{ company.name }}, sauf si la défaillance est due à une mauvaise
+        utilisation, ou sortie de route due au conducteur.
+    </p>
+
+    <p>
+        4) En cas d’immobilisation complète d’un véhicule, {{ company.name }} s’engage à fournir un
+        véhicule équivalent de remplacement, sans changement de tarif, ni modification du contrat.
+        En cas d’impossibilité de remplacement, la société {{ company.name }} prendra en charge la prise en
+        location d’un véhicule équivalent auprès du loueur le plus proche. Le contrat sera établi au nom
+        de la société utilisatrice, et la facture sera à adresser à la société {{ company.name }} pour
+        remboursement.
+    </p>
+
+    <p>
+        5) L’entretien du matériel frigorifique est à la charge complète de {{ company.name }}, qui dispose
+        d’une attestation de capacité délivrée par "Cemafroid" en date du 24/08/2009 sous le numéro
+        17015.
+    </p>
+
+    <p>
+        6) La fourniture des pneumatiques est sans limite de kilométrage.
+    </p>
+
+    <p>
+        7) La fourniture de lubrifiants est assurée par {{ company.name }}, la fourniture de l’AD Blue est
+        assurée par chaque entreprise locataire.
+        La société {{ company.name }} met à disposition dans chaque entreprise locataire : liquide de
+        refroidissement, lookeed de freins, huile moteur, huile hydraulique de hayon.
+    </p>
+
+    <p>
+        8) Les taxes à l’essieu sont à la charge de {{ company.name }}.
+    </p>
+
+    <p>
+        9) Les véhicules sont assurés par une assurance flotte souscrite auprès de la compagnie
+        La société {{ company.name }} a souscrit un contrat d’assurance responsabilité civile auprès de
+        "LE GAN" (Contrat N° 071.562.360 du 01.10.2007)<br>
+        Pour les accidents en tort, ou à torts partagés, le locataire s’acquittera d’une somme
+        la compagnie "GENERALI" (Contrat N° 54902609)<br>
+        Pour les vols, actes de vandalisme et incendie avec exclusion de toute garantie des chocs en
+        forfaitaire de 1 000,00 € pour les poids lourds et de 500,00 € pour les véhicules légers.
+        hauteur, le locataire s’acquittera d’une somme forfaitaire de 1 000,00 € pour les poids lourds
+        et de 500,00 € pour les véhicules légers.<br><br>
+        Le chauffeur devra attester de sa FIMO, F.C.O.S. et de la validité de son permis de conduire
+        auprès de son employeur (moyen de contrôle interne).<br><br>
+        En cas d’accident de la circulation, le montant de la franchise sera à la charge du locataire.
+        Toute casse de matériel tel que rétroviseur, feux de position, perte de clefs, bouchons de réservoirs,
+        clés pour hayons élévateurs, choc sur pneumatique, sera à la charge du locataire. Il en sera de
+        même pour toute casse due à un accident pour lequel un constat n’aurait pas été rempli.
+
+    </p>
+
+
+</div>
+
+<hr/>
+
+<div class="section section3">
+    <div id="footer">
+        <div class="page-number"></div>
+    </div>
+
+    <p>
+        10) {{ company.name }} se charge du suivi et de l’obtention de tous les documents affectés à chaque
+        véhicule tels que :<br>
+        - Certificat d’agrément sanitaire et vétérinaire.<br>
+        - Visite périodique vétérinaire.<br>
+        - Présentation aux Services des Mines.<br>
+        - Vérification à date réglementaire des contrôlographes.<br>
+        - Vérification périodique des hayons élévateurs.<br>
+        - Vérification des dates de validité des bouteilles d’air.<br>
+        - Contrôle extincteur.<br>
+        - Contrôle limiteur de vitesse.<br>
+        - Fourniture de la taxe à l’essieu pour les poids lourds.<br>
+        - Procès verbaux de gendarmerie, de police, de la DRE, des douanes.<br>
+        - Prise en charge du suivi administratif suite à un accident (déclarations).<br>
+        - Suivi juridique suite à un accident.<br>
+
+    </p>
+
+    <p>
+        11) Conditions du contrat : Facturation.
+    </p>
+    <p style="margin-left: 30px;">
+        - Prix mensuel de location : <strong>{{ rental.price }} €</strong><br>
+        - Durée du contrat du <strong>{{ rental.startRental|date('d/m/Y') }}</strong> au <strong>{{ rental.EndRental|date('d/m/Y') }}</strong><br>
+        - La facturation sera faite chaque début de mois.<br>
+        - Le règlement sera fait à 30 jours maximum par chèque ou virement.<br>
+        - L'indexation suivra l'indice du Comité National des Loueurs.<br><br>
+
+        Le locataire s'engage à adresser le dernier jour du mois, par mail ou fax, le kilométrage réalisé, ainsi que le nombre d'heures de fonctionnement du groupe groid.
+    </p>
+
+
+    <p>
+        12) La location est hors carburants (essence, gasoil, fuel pour les groupes frigorifiques, AD Blue),
+        frais d’autoroute, frais de parking, péages divers.
+    </p>
+
+    <p>
+        13) Le locataire conserve la responsabilité des marchandises transportées. Il n’y aura aucune
+        prise en charge des marchandises détruites suite à une défaillance des appareils de froid ou de
+        basculement des marchandises sur les hayons.
+    </p>
+
+    <p>
+        14) En cas de procès de circulation, de non-respect du code de la route, la charge en sera assurée
+        par le locataire et/ou directement par le chauffeur, suivant l’organisation interne du site.
+    </p>
+
+    <p>
+        15) Les procès dus à une défaillance telle que défaut de visite, d’agrément etc… seront pris en
+        charge par {{ company.name }}.
+    </p>
+
+    <p>
+        16) L’utilisateur du véhicule doit informer le Responsable logistique de son entreprise ou la
+        direction de celle-ci, ou en cas d’urgence le directeur ou le chef d’atelier de {{ company.name }}, de tout
+        défaut de fonctionnement. Il dispose pour cela d’un cahier de liaison entre l’entreprise et le
+        service de maintenance et du numéro de téléphone de {{ company.name }} indiqué sur l’enveloppe
+        contenant le contrat de location.
+    </p>
+
+    <p>
+        17) Le chauffeur du véhicule vérifiera, suite au passage à l’atelier {{ company.name }} pour toutes les
+        interventions, que le carnet d’entretien a bien été renseigné. Il en sera de même pour les
+        interventions réalisées par des prestataires externes référencés auprès de {{ company.name }}.
+    </p>
+</div>
+<hr>
+<div class="section section4">
+    <div id="footer">
+        <div class="page-number"></div>
+    </div>
+
+    <p>
+        18) Le véhicule est équipé d’un traceur. L’entreprise locataire peut suivre le positionnement du
+        véhicule et contrôler à distance la température de la cellule froid.<br>
+        L’entreprise locataire devra faire une déclaration auprès de la C.N.I.L. pour l’équipement du
+        traceur et en informer le personnel affecté à la conduite.<br>
+        L’installation et l’abonnement auprès de Masternaut sont pris en charge par la société
+        {{ company.name }}.
+    </p>
+
+    <p>
+        19) La société {{ company.name }} fournira, sur demande de l’entreprise locataire, un badge de
+        télépéage type Eurotoll. La facturation sera reçue et réglée par {{ company.name }}, qui ensuite
+        refacturera, avec une majoration forfaitaire pour le traitement administratif du dossier de 10 €
+        minimum à 15 € maximum en fonction de l’importance du retraitement.
+    </p>
+
+    <p>
+        20) La société {{ company.name }} contrôle chaque véhicule, par une visite sur site et rendra compte au
+        responsable logistique ou à la direction de l’entreprise locataire de l’état du matériel contrôlé. La
+        société {{ company.name }} indiquera aussi les préconisations et recommandations en cas de mauvaise
+        utilisation du matériel.
+    </p>
+
+    <p>
+        21) Durée du contrat :
+    </p>
+    <p style="margin-left: 20px;">
+        . Si le véhicule est neuf, le contrat est fixé pour une durée de cinq ans, renouvelable ensuite
+        par tacite reconduction par période d’un an.<br>
+        . Si le véhicule n’est pas neuf, le contrat est fixé pour une durée de deux ans, renouvelable
+        ensuite par tacite reconduction par période d’un an.<br>
+    </p>
+
+    <p>
+        22) Mise à disposition du véhicule :
+        La société {{ company.name }} indiquera aux utilisateurs la bonne utilisation du véhicule, de la cellule
+        frigorifique, du hayon élévateur, et des portes arrières relevables manuelles ou pneumatiques.
+    </p>
+
+    <p>
+        23) Assistance 24h/24 :<br>
+        La société {{ company.name }} met à disposition un numéro d’appel d’urgence<br>
+    </p>
+    <div style="float: left; margin-left: 20px;">
+        Téléphone<br>
+        Portable<br>
+    </div>
+    <div style="float: left; margin-left: 2px;">
+        : <br>
+        : <br>
+    </div>
+    <div style="float: left">
+        <strong>03.44.75.02.60</strong><br>
+        <strong>06.80.61.98.62</strong>
+    </div>
+<br>
+<br>
+<br>
+    <p>
+        24) Liste des contrôles obligatoires :
+    </p>
+    <div style="float: left;margin-left: 20px">
+        - Hayons élévateurs<br>
+        - Contrôles techniques (mines)<br>
+        - Limiteur de vitesse<br>
+        - Anti pollution<br>
+        - Extincteur<br>
+        - Etalonnage contrôlographe<br>
+        - Bouteilles d’air comprimé<br>
+        - Visites périodiques et préventives<br>
+        - Test de descente ou maintien en température<br>
+        - Test d’étanchéité
+    </div>
+    <div style="float: right">
+        tous les 6 mois<br>
+        tous les ans<br>
+        tous les ans<br>
+        tous les ans<br>
+        tous les ans<br>
+        tous les 2 ans<br>
+        tous les 10 ans<br>
+        lors de l’entretien ou visite sur le parc<br>
+        tous les 6 ans<br>
+        tous les ans lors de l’entretien
+    </div>
+</div>
+<hr>
+<div class="section section5">
+    <div id="footer">
+        <div class="page-number"></div>
+    </div>
+
+    <p>
+        Les visites périodiques et préventives comprennent :
+    </p>
+    <div style="margin-left: 20px;">
+        <input type="checkbox" /> * Vidanges des lubrifiants et liquides hydrauliques.<br>
+        <input type="checkbox" /> * Contrôle des pièces d'usure.<br>
+        <input type="checkbox" /> * Contrôle des circuits électriques.<br>
+        <input type="checkbox" /> * Contrôle des pneumatiques.<br>
+        <input type="checkbox" /> * Contrôle de l'état général.
+    </div>
+
+    <br>
+    <br>
+
+    <div style="float: left; width: 350px;">
+        Le loueur <strong>{{ company.name }}</strong><br>
+        Représenté par<br>
+        <strong>{{ company.title }} {{ company.director }}</strong>
+    </div>
+
+    <div style="float: left">
+        Le locataire <strong>{{ rental.company.name }}</strong><br>
+        Représenté par<br>
+        <strong>{{ rental.company.title }} {{ rental.company.director }}</strong>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div style="float: left; width: 350px;">
+        Le {{ jour }} {{ day }} {{ monthFormat[month] }} {{ year }}
+    </div>
+    <div style="float: left">
+        Lu et approuvé<br>
+        Bon pour accord
+
+    </div>
+</div>
+</body>
+</html>

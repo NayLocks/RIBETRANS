@@ -1,0 +1,397 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ vehicle.numberPlate }}{% endblock %}
+{% block pageTitle %}Fiche Véhicule > {{ vehicle.numberPlate }}{% endblock %}
+{% block body %}
+
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="body">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#vehicle">INFORMATION GENERALE</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#carteGrise">CARTE GRISE</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#documents">DOCUMENTS</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#location">LOCATIONS</a></li>
+              {#              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#entretien">ENTRETIENS</a></li>#}
+              {#              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photos">GESTION DES PHOTOS</a></li>#}
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="vehicle">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="product details">
+                      <div class="row clearfix">
+                        <div class="col-sm-3">
+                          <h3 class="product-title mb-0">{{ vehicle.numberPlate }}</h3>
+                          <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
+                            Entrée dans le parc : <strong>{{ vehicle.entrancePark|date('d/m/Y') }}</strong><br>
+                            Sortie du parc : <strong>{% if vehicle.exitPark|date('d/m/Y') != "01/01/1900" %}{{ vehicle.exitPark|date('d/m/Y') }}{% endif %}</strong><br>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Catégorie : <strong {% if vehicle.category.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.category.name }}{% else %}>{{ vehicle.category.name }}{% endif %}</strong><br>
+                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
+                            Type Carrosserie : <strong>{{ vehicle.bodyType }}</strong>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Location en cours : <strong>{{ rentalStatus[rental.status] }}</strong><br>
+                            Début du contrat : <strong>{% if rental.startRental|date('d/m/Y') != "01/01/1900" %}{{ rental.startRental|date('d/m/Y') }}{% endif %}</strong><br>
+                            Fin du contrat : <strong>{% if rental.endRental|date('d/m/Y') != "01/01/1900" %}{{ rental.endRental|date('d/m/Y') }}{% endif %}</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Tarif : <strong>{{ rental.price }}</strong><strong> €</strong><br>
+                            Poids : <strong>{% if 'T' in vehicle.weight %}{{ vehicle.weight }}</strong>{% else %}{{ vehicle.weight }}</strong><strong> Kg</strong>{% endif %}<br>
+                            Dernier relevé : <strong>{{ vehicle.km }}</strong><strong> Km</strong><br>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Pneus avant<br>
+                            Marque : <strong>{{ vehicle.tireBrandsAV.name }}</strong><br>
+                            Dimension : <strong>{{ vehicle.tireSizeAV }}</strong><br>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Pneus arrière<br>
+                            Marque : <strong>{{ vehicle.tireBrandsAR.name }}</strong><br>
+                            Dimension : <strong>{{ vehicle.tireSizeAR }}</strong><br>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Dernier contrôle technique : <strong>15/10/2019</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Prochain contrôle technique : <strong>15/10/2021</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="carteGrise">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+                    {#                    <a href="{{ path('cardLightVehicleEdit', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">MODIFIER CARTE GRISE DE {{ vehicle.numberPlate }}</a>#}
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="product details">
+                      <div class="row clearfix">
+                        <div class="col-sm-3">
+                          <h3 class="product-title mb-0">{{ vehicle.numberPlate }}</h3>
+                          <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
+                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
+                            Type Carrosserie : <strong>{{ vehicle.bodyType }}</strong><br>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Type : <strong>{{ vehicle.type.name }}</strong><br>
+                            Genre : <strong>{{ vehicle.kind.name }}</strong>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Nombre de places : <strong>{{ vehicle.nbPlaces }}</strong><br>
+                            Energie : <strong>{{ vehicle.energy }}</strong><br>
+                            Puissance : <strong>{{ vehicle.power }}</strong><br>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Poids (PTAC) : <strong>{% if 'T' in vehicle.weight %}{{ vehicle.weight }}</strong>{% else %}{{ vehicle.weight }}</strong><strong> Kg</strong>{% endif %}<br>
+                            Poids à vide : <strong>{% if 'T' in vehicle.emptyWeight %}{{ vehicle.emptyWeight }}</strong>{% else %}{{ vehicle.emptyWeight }}</strong><strong> Kg</strong>{% endif %}<br>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="documents">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+                    <button class="btn btn-default btn-round" data-toggle="modal" data-target="#defaultModal" style="width: 100%; font-size: 15px;">NOUVEAU DOCUMENT</button>
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="container-fluid file_manager">
+                      <div class="row clearfix">
+                        <div class="col-lg-12">
+                          <div class="card">
+                            <div class="tab-content">
+                              <div class="row clearfix">
+                                {% for document in vehicle.lVehiclesDocuments %}
+                                  <div class="col-lg-3 col-md-4 col-sm-12">
+                                    <div class="card" >
+                                      <div class="file" style="background-color: lightgray;">
+                                        <div style="float: right">
+                                          <a class="btn btn-icon btn-icon-mini btn-round btn-danger" href="{{ path('deleteLVDocument', { 'numberPlate': vehicle.numberPlate, 'document': document.id }) }}">
+                                            <i class="zmdi zmdi-delete"></i>
+                                          </a>
+                                        </div>
+                                        <a href="{{ asset('Vehicles/' ~ vehicle.numberPlate ~ '/documents/' ~ document.path ) }}" target="_blank">
+                                          <div class="icon">
+                                            <i class="zmdi zmdi-collection-pdf"></i>
+                                          </div>
+                                          <div class="file-name">
+                                            <p class="m-b-5 text-muted">{{ document.path }}</p>
+                                            <small>Size: 3MB <span class="date text-muted">{{ document.dateCreated|date('d/m/Y') }}</span></small>
+                                          </div>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="title" id="defaultModalLabel">{{ vehicle.numberPlate }} > Nouveau document</h4>
+                        </div>
+                        {{ form_start(form) }}
+                        <div class="modal-body">
+                          {{ form_label(form.name) }}
+                          {{ form_widget(form.name) }}
+                          {{ form_label(form.document) }}
+                          {{ form_widget(form.document) }}
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">ANNULER</button>
+                          {{ form_widget(form.valider) }}
+                        </div>
+                        {{ form_end(form) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="location">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+{#                    <a href="{{ path('newRentalLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVELLE LOCATION</a>#}
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="table-responsive">
+                      <table class="table table-hover product_item_list c_table theme-color mb-0">
+                        <thead>
+                        <tr>
+                          <th>SOCIETE</th>
+                          <th>CHAUFFEUR</th>
+                          <th>DEBUT LOCATION</th>
+                          <th>FIN LOCATION</th>
+                          <th>TARIF</th>
+                          <th>STATUT</th>
+                          <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for rental in vehicle.LVehiclesRentals %}
+                          <tr {% if rental.status == 1 %}style="background-color: #a2e09c"{% endif %}>
+                            <td><strong>{{ rental.company.name }}</strong></td>
+                            <td><strong>{{ rental.driver }}</strong></td>
+                            <td>{{ rental.startRental|date('d/m/Y') }}</td>
+                            <td>{{ rental.endRental|date('d/m/Y') }}</td>
+                            <td><strong>{{ rental.price }} €</strong></td>
+                            <td>{{ rentalStatus2[rental.status] }}</td>
+                            <td><a href="{{ path('rentalPDF', { 'numberPlate': vehicle.numberPlate, 'id': rental.id }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">IMPRIMER CONTRAT</a></td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {#              <div class="tab-pane" id="entretien">#}
+              {#                <a href="{{ path('newMaintenanceLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 20%; font-size: 15px; float: right;">AJOUTER UN ENTRETIEN</a>#}
+              {#                <div class="table-responsive">#}
+              {#                  <table class="table table-hover product_item_list c_table theme-color mb-0">#}
+              {#                    <thead>#}
+              {#                    <tr>#}
+              {#                      <th>SOCIETE</th>#}
+              {#                      <th>CHAUFFEUR</th>#}
+              {#                      <th>INTERVENANT</th>#}
+              {#                      <th>ENTREE</th>#}
+              {#                      <th>SORTIE</th>#}
+              {#                      <th>KM</th>#}
+              {#                      <th>INTERVENTION</th>#}
+              {#                      <th>QTE</th>#}
+              {#                      <th>MT UNIT</th>#}
+              {#                      <th>TOTAL</th>#}
+              {#                    </tr>#}
+              {#                    </thead>#}
+              {#                    <tbody>#}
+              {#                    {% for maintenance in maintenances %}#}
+              {#                      <tr>#}
+              {#                        <td><strong>{{ maintenance.company.name }}</strong></td>#}
+              {#                        <td>{{ maintenance.driver }}</td>#}
+              {#                        <td><strong>{{ maintenance.participant.firstname }} {{ maintenance.participant.lastname }}</strong></td>#}
+              {#                        <td></td>#}
+              {#                        <td>{{ maintenance.entranceMaintenance|date('d/m/Y') }}</td>#}
+              {#                        <td>{{ maintenance.exitMaintenance|date('d/m/Y') }}</td>#}
+              {#                        <td>{{ maintenance.km }} Km</td>#}
+              {#                        <td>{{ maintenance.maintenance }}</td>#}
+              {#                        <td>{{ maintenance.quantity }}</td>#}
+              {#                        <td>{{ maintenance.priceUnit }} €</td>#}
+              {#                        <td>{{ maintenance.total }} €</td>#}
+              {#                      </tr>#}
+              {#                    {% endfor %}#}
+              {#                    </tbody>#}
+              {#                  </table>#}
+              {#                </div>#}
+              {#              </div>#}
+              {#              <div class="tab-pane" id="photos">#}
+              {#                <div class="container-fluid file_manager">#}
+              {#                  <div class="row clearfix">#}
+              {#                    <div class="col-lg-12">#}
+              {#                      <div class="card">#}
+              {#                        <div class="tab-content">#}
+              {#                          <div class="row clearfix">#}
+              {#                            {% for picture in pictures %}#}
+              {#                              <div class="col-lg-3 col-md-4 col-sm-12">#}
+              {#                                <div class="card">#}
+              {#                                  <div class="file" style="background-color: lightgray;">#}
+              {#                                      <div class="hover">#}
+              {#                                        <a class="btn btn-icon btn-icon-mini btn-round btn-danger" href="{{ path('deletePicture', { 'numberPlate': vehicle.numberPlate, 'picture': picture.id }) }}">#}
+              {#                                          <i class="zmdi zmdi-delete"></i>#}
+              {#                                        </a>#}
+              {#                                      </div>#}
+              {#                                      <div class="image" style="background-color: lightgray;">#}
+              {#                                        <img src="{{ asset('Vehicles/' ~ vehicle.numberPlate ~ "/" ~ picture.path) }}" alt="img" class="img-fluid">#}
+              {#                                      </div>#}
+              {#                                      <div class="file-name">#}
+              {#                                        <p class="m-b-5 text-muted">{{ picture.path }}</p>#}
+              {#                                        <small>Size: 2MB <span class="date">{{ picture.dateCreate|date('d/m/Y') }}</span></small>#}
+              {#                                      </div>#}
+              {#                                  </div>#}
+              {#                                </div>#}
+              {#                              </div>#}
+              {#                            {% endfor %}#}
+              {#                          </div>#}
+              {#                        </div>#}
+              {#                      </div>#}
+              {#                    </div>#}
+              {#                  </div>#}
+              {#                </div>#}
+              {#              </div>#}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}
+
+
+{% block javascripts %}
+  <script src="{{ asset('vehicles/editablevehicle.js') }}"></script>
+{% endblock %}

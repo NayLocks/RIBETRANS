@@ -1,0 +1,188 @@
+{% set monthFormat = {"01": "Janvier", "02": "Février", "03": "Mars", "04": "Avril", "05": "Mai", "06": "Juin", "07": "Juillet", "08": "Août", "09": "Septembre", "10": "Octobre", "11": "Novembre", "12": "Décembre"} %}
+{% set nbSection = 1 %}
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <style type="text/css">
+
+        body {
+            font-family: sans-serif;
+            margin: 0.5cm 0;
+            text-align: justify;
+            font-size: 15px;
+        }
+
+        #header{
+            position: relative;
+            top: -30px;
+            left: 0;
+            right: 0;
+        }
+
+        #footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            font-size: 0.9em;
+        }
+
+        #footer {
+            bottom: 10px;
+            border-top: 3px solid black;
+            padding-top: 5px;
+        }
+
+        #header table,
+        #footer table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+        }
+
+        #header td,
+        #footer td {
+            padding: 0;
+            width: 50%;
+        }
+
+        .page-number {
+            text-align: right;
+        }
+
+        .page-number:before {
+            content: "Page " counter(page);
+        }
+
+        hr {
+            page-break-after: always;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+{% for company in companies %}
+    {% set htTotal = 0 %}
+    <div class="section section{{ nbSection }}">
+        <div id="header">
+            <img src="{{ app.request.getSchemeAndHttpHost() ~ asset('img/en_tete.jpg') }}" width="100%" alt="logo">
+
+            <h2 style="text-align: center">FACTURE LOCATION VEHICULES</h2>
+        </div>
+        <div id="footer">
+            <div class="page-number"></div>
+        </div>
+        <div>
+            <div style="float: left">
+                N° Facture : <strong>{{ nbSection }}</strong>
+                {% set nbSection = nbSection + 1 %}
+            </div>
+            <div style="float: right">
+                Facturation du mois de <strong>{{ monthFormat[month] }}</strong>
+            </div>
+            <br>
+            <br>
+            <div style="float: left">
+                Client<br>
+            </div>
+            <div style="float: left; padding-left: 5px; padding-right: 5px;">
+                :<br>
+            </div>
+            <div style="float: left">
+                <strong> {{ company.name }}</strong><br>
+                <strong> {{ company.street }}, {{ company.streetSupplement }}</strong><br>
+                <strong> {{ company.city }} ({{ company.postalCode }})</strong><br>
+            </div>
+
+            <div style="float: right">
+                <strong>{{ startDay }} {{ startMonth }} {{ monthFormat[month] }} {{ year }}</strong><br>
+                <strong>{{ endDay }} {{ endMonth }} {{ monthFormat[month] }} {{ year }}</strong>
+            </div>
+            <div style="float: right; padding-left: 5px; padding-right: 5px;">
+                :<br>
+                :
+            </div>
+            <div style="float: right; text-align: right">
+                Le <br>
+                Echéance
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <table class="table-responsive table" style="width: 100%">
+            <thead>
+            <tr>
+                <td><strong>No Parc</strong></td>
+                <td><strong>Immatriculation</strong></td>
+                <td><strong>Genre</strong></td>
+                <td><strong>Marque</strong></td>
+                <td><strong>Type</strong></td>
+                <td><strong>Tarif</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                {% if category.name != "NON RENSEIGNEE" %}
+                <tr style="border-top : 1px solid black">
+                    <td style="border-top: 1px solid black">Catégorie :</td>
+                    <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
+                    <td style="border-top: 1px solid black" colspan="4"></td>
+                    {% set ht = 0 %}
+                </tr>
+                {% for vehicle in vehicles %}
+                    {% if vehicle.category.name == category.name %}
+                        {% for rental in vehicle.lVehiclesRentals %}
+                            {% if rental.company.name == company.name and rental.status == 1 %}
+                                <tr>
+                                    <td>00</td>
+                                    <td>{{ vehicle.numberPlate }}</td>
+                                    <td>{{ vehicle.kind.name }}</td>
+                                    <td>{{ vehicle.brand.name }}</td>
+                                    <td>{{ vehicle.type.name }}</td>
+                                    <td>{{ rental.price }} €</td>
+                                    {% set ht = ht + rental.price %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td style="border-top: 1px solid black"><strong>Total :</strong></td>
+                    <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
+                    <td style="border-top: 1px solid black"><strong>{{ ht }} €</strong></td>
+                </tr>
+                {% set htTotal = htTotal + ht %}
+                {% endif %}
+            {% endfor %}
+            </tbody>
+            {% set tva = htTotal*0.2 %}
+            {% set ttc = htTotal+tva %}
+            <tfoot style="border-bottom: 1px solid black;border-top: 1px solid black">
+            <tr>
+                <td colspan="4"><strong>{{ company.name }}</strong></td>
+                <td><strong>Total HT :</strong></td>
+                <td><strong>{{ htTotal }} €</strong></td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td><strong>TVA (20%) :</strong></td>
+                <td><strong>{{ tva }} €</strong></td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td><strong>TTC :</strong></td>
+                <td><strong>{{ ttc }} €</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <hr>
+{% endfor %}
+</body>
+</html>

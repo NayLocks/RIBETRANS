@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div class="authentication">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                    <form class="card auth_form" method="post">
+                        <div class="header">
+                            <img class="logo" src="{{ asset('img/societes/RIBETRANS.jpg') }}" alt="">
+                            <h5>GESTION DE PARC RIBETRANS</h5>
+                        </div>
+                        <div class="body">
+                            <div class="input-group mb-5">
+                                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Identifiant" required autofocus>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                </div>
+                            </div>
+                            <div class="input-group mb-4">
+                                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de Passe" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                            <button class="btn btn-default btn-round waves-effect waves-light" type="submit" style="width:100%; font-size: 15px;">Se Connecter</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-8 col-sm-12">
+                    <div class="card">
+                        <img src="{{ asset('img/background.jpg') }}" alt="Sign In"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
