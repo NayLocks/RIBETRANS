@@ -57,7 +57,6 @@ class FacturesPDFController extends AbstractController
         $pdfFilepath =  'TEST_FACTURE.pdf';
         file_put_contents($pdfFilepath, $output);
 
-        exit();
-        return $this->redirectToRoute('cardLightVehicle', ['numberPlate' => $numberPlate]);
+        return $this->redirect('/'.$pdfFilepath);
     }
 }

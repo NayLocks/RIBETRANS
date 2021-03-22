@@ -79,6 +79,7 @@ class RentalsPDFController extends AbstractController
             $entitymanager->persist($document);
             $entitymanager->flush();
         }
-        return $this->redirectToRoute('cardLightVehicle', ['numberPlate' => $numberPlate]);
+
+        return $this->redirect('/'.$pdfFilepath);
     }
 }
