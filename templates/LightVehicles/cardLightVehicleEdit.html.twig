@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ vehicle.numberPlate }}{% endblock %}
+{% block pageTitle %}Fiche Véhicule > MODIFICATION >{{ vehicle.numberPlate }}{% endblock %}
+{% block body %}
+  {{ form_start(form) }}
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="body">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#vehicle">MODIFICATION {{ vehicle.numberPlate }}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="vehicle">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.lVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+                    {{ form_widget(form.valider) }}
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="product details">
+                      <div class="row clearfix">
+                        <div class="col-sm-3">
+                          {{ form_label(form.numberPlate) }}
+                          {{ form_widget(form.numberPlate) }}
+                          <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
+                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
+                            {{ form_label(form.bodyType) }}
+                            {{ form_widget(form.bodyType) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Catégorie : <strong {% if vehicle.category.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.category.name }}{% else %}>{{ vehicle.category.name }}{% endif %}</strong><br>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            {{ form_label(form.nbPlaces) }}
+                            {{ form_widget(form.nbPlaces) }}
+
+                            {{ form_label(form.energy) }}
+                            {{ form_widget(form.energy) }}
+
+                            {{ form_label(form.power) }}
+                            {{ form_widget(form.power) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            {{ form_label(form.weight) }}
+                            {{ form_widget(form.weight) }}
+
+                            {{ form_label(form.emptyWeight) }}
+                            {{ form_widget(form.emptyWeight) }}
+
+                            {{ form_label(form.km) }}
+                            {{ form_widget(form.km) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Entrée dans le parc : <strong>{{ vehicle.entrancePark|date('d/m/Y') }}</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Sortie du parc : <strong>{% if vehicle.exitPark|date('d/m/Y') != "01/01/1900" %}{{ vehicle.exitPark|date('d/m/Y') }}{% endif %}</strong>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Pneus avant<br>
+                            Marque : <strong {% if vehicle.tireBrandsAV.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.tireBrandsAV.name }}{% else %}>{{ vehicle.tireBrandsAV.name }}{% endif %}</strong><br>
+                            {{ form_label(form.tireSizeAV) }}
+                            {{ form_widget(form.tireSizeAV) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Pneus arrière<br>
+                            Marque : <strong {% if vehicle.tireBrandsAR.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.tireBrandsAR.name }}{% else %}>{{ vehicle.tireBrandsAR.name }}{% endif %}</strong><br>
+                            {{ form_label(form.tireSizeAR) }}
+                            {{ form_widget(form.tireSizeAR) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Dernier contrôle technique : <strong>15/10/2019</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Prochain contrôle technique : <strong>15/10/2021</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_end(form) }}
+{% endblock %}

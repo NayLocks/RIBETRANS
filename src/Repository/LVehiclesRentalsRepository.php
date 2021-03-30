@@ -38,6 +38,17 @@ class LVehiclesRentalsRepository extends ServiceEntityRepository
             ;
     }
 
+
+    public function rentalActive($id){
+        return $this->createQueryBuilder('r')
+            ->where('r.status = 1')
+            ->andWhere('r.vehicle = :lightVehicle')
+            ->setParameter('lightVehicle', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return LVehiclesRentals[] Returns an array of LVehiclesRentals objects
     //  */

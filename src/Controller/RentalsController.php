@@ -7,20 +7,66 @@ use App\Entity\LightVehicles;
 use App\Entity\LVehiclesDocuments;
 use App\Entity\LVehiclesRentals;
 use App\Entity\Settings;
+use App\Form\LVRentalFormType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class RentalsPDFController extends AbstractController
+class RentalsController extends AbstractController
 {
     /**
-     * @Route("/contrat_location/{numberPlate}/{id}", name="rentalPDF")
+     * @Route("/contrat_location/nouveau/{numberPlate}", name="newRentalLV")
      */
-    public function index($numberPlate, $id)
+    public function newRentalLV(Request $request, $numberPlate)
+    {
+        $allLightVehicles = $this->getDoctrine()->getRepository(LightVehicles::class);
+        $vehicle = $allLightVehicles->findOneBy(array('numberPlate' => $numberPlate));
+
+        $allRentals = $this->getDoctrine()->getRepository(LVehiclesRentals::class);
+        $rental = $allRentals->rentalActive(1);
+
+        $form = $this->createForm(LVRentalFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $allRentals = $this->getDoctrine()->getRepository(LVehiclesRentals::class);
+            $rental = $allRentals->findOneBy(array('id' => $rental[0]->getId()));
+
+            $rental->setStatus(0);
+
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($rental);
+            $entitymanager->flush();
+
+            $rental = new LVehiclesRentals();
+
+            $rental->setDriver($form->get('driver')->getData());
+            $rental->setStartRental($form->get('startRental')->getData());
+            $rental->setEndRental($form->get('endRental')->getData());
+            $rental->setPrice($form->get('price')->getData());
+            $rental->setStatus(1);
+            $rental->setVehicle($vehicle);
+            $rental->setCompany($vehicle->getCompany());
+
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($rental);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('cardLightVehicle', array('numberPlate' => $numberPlate));
+        }
+
+        return $this->render('LightVehicles/rental.html.twig', ['form' => $form->createView(), 'rental' => $rental[0]]);
+    }
+
+    /**
+     * @Route("/contrat_location/{numberPlate}/{id}", name="LVrentalPDF")
+     */
+    public function rentalLVPDF($numberPlate, $id)
     {
         $allSettings = $this->getDoctrine()->getRepository(Settings::class);
         $company = $allSettings->findAll();

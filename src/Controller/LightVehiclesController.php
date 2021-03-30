@@ -6,6 +6,7 @@ use App\Entity\LightVehicles;
 use App\Entity\LVehiclesDocuments;
 use App\Entity\LVehiclesRentals;
 use App\Form\DocumentsFormType;
+use App\Form\LightVehiclesFormType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -30,8 +31,6 @@ class LightVehiclesController extends AbstractController
         $files = glob("Vehicles/".$numberPlate."/*.*");
         $compteur = count($files);
 
-        $form = $this->createForm(DocumentsFormType::class);
-        $form->handleRequest($request);
 
         if(empty($rental)){
             $rental[0]['price'] = 0;
@@ -40,8 +39,12 @@ class LightVehiclesController extends AbstractController
             $rental[0]['status'] = 0;
         }
 
+        $form = $this->createForm(DocumentsFormType::class);
+        $form->handleRequest($request);
+
         $documentsUpload = new LVehiclesDocuments();
         $date = new DateTime();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $documentFile = $form->get('document')->getData();
             if ($documentFile) {
@@ -62,108 +65,48 @@ class LightVehiclesController extends AbstractController
         return $this->render('LightVehicles/cardLightVehicle.html.twig', ['vehicle' => $lightVehicle, "nbPictures" => $compteur, 'form' => $form->createView(), 'rental' => $rental[0]]);
     }
 
-//    /**
-//     * @Route("/Vehicles/leger/nouveau/", name="ficheVehiculeNouveau")
-//     */
-//    public function ficheVehiculeNouveau(Request $request)
-//    {
-//        $vehicule = new Vehicule();
-//
-//        $form = $this->createForm(LightVehiculeFormType::class);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-////            $filename = 'Vehicles/'.$immatriculation.'/';
-////            if (is_dir($filename)) {
-////                $files = glob("Vehicles/".$immatriculation."/*.*");/* $files pour "lister" les fichiers - Mise en place de *.* pour dire que ce dossier contient une extension (par exemple .jpg, .php, etc... */
-////                $compteur = count($files);
-////                $compteur++;
-////                $brochureFile = $form->get('photo')->getData();
-////                if ($brochureFile) {
-////                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-////                    $newFilename = $immatriculation.'-'.$compteur.'.'.$brochureFile->guessExtension();
-////
-////                    try { $brochureFile->move($this->getParameter('img_vehicules')."/".$immatriculation, $newFilename); } catch (FileException $e) {}
-////                }
-////            } else {
-////                mkdir("Vehicles/".$immatriculation);
-////                mkdir("Vehicles/".$immatriculation."/documents");
-////                $brochureFile = $form->get('photo')->getData();
-////                if ($brochureFile) {
-////                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-////                    $newFilename = $immatriculation.'-1.'.$brochureFile->guessExtension();
-////
-////                    try { $brochureFile->move($this->getParameter('img_vehicules')."/".$immatriculation, $newFilename); } catch (FileException $e) {}
-////                }
-////            }
-//
-//            $vehicule->setImmatriculation($form->get('immatriculation')->getData());
-//            $vehicule->setSociete($form->get('societe')->getData());
-//            $vehicule->setMiseCirculation($form->get('miseCirculation')->getData());
-//            $vehicule->setEntreeParc($form->get('entreeParc')->getData());
-//            $vehicule->setMarque($form->get('marque')->getData());
-//            $vehicule->setCategorie($form->get('categorie')->getData());
-//            $vehicule->setCarrosserie($form->get('carrosserie')->getData());
-//            $vehicule->setNoParc(00);
-//            $vehicule->setPoids(00);
-//            $vehicule->setCtLoc(0);
-//            $vehicule->setIsArchived(0);
-//
-//            $entitymanager = $this->getDoctrine()->getManager();
-//            $entitymanager->persist($vehicule);
-//            $entitymanager->flush();
-//
-//            return $this->redirectToRoute('ficheVehicule', array('immatriculation' => $form->get('immatriculation')->getData()));
-//        }
-//        return $this->render('LightVehicles/ficheVehiculeNouveau.html.twig', ['form' => $form->createView()]);
-//    }
+    /**
+     * @Route("/Vehicles/leger/modification/{numberPlate}", name="cardLightVehicleEdit")
+     */
+    public function ficheVehiculeModif(Request $request, $numberPlate)
+    {
+        $allLightVehicles = $this->getDoctrine()->getRepository(LightVehicles::class);
+        $lightVehicle = $allLightVehicles->findOneBy(array('numberPlate' => $numberPlate ));
 
-//    /**
-//     * @Route("/Vehicles/leger/modification/{numberPlate}", name="cardLightVehicleEdit")
-//     */
-//    public function ficheVehiculeModif(Request $request, $numberPlate)
-//    {
-//        $allLightVehicles = $this->getDoctrine()->getRepository(LightVehicles::class);
-//        $lightVehicle = $allLightVehicles->findOneBy(array('numberPlate' => $numberPlate ));
-//
-//        $allPhotos = $this->getDoctrine()->getRepository(LVehiclePictures::class);
-//        $photo = $allPhotos->findBy(array('lightVehicle' => $lightVehicle->getId()));
-//
-//        $allRentals = $this->getDoctrine()->getRepository(LVehicleRentals::class);
-//        $rentals = $allRentals->rentalsVehicle($lightVehicle->getId());
-//        $rental = $allRentals->rentalLastVehicle($lightVehicle->getId());
-//
-//
-//
-//        $form = $this->createForm(LightVehiculeFormType::class, $lightVehicle);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//            $lightVehicle->setNumberPlate($form->get("numberPlate")->getData());
-//            $lightVehicle->setCompany($form->get("company")->getData());
-//            $lightVehicle->setPutCirculation($form->get("putCirculation")->getData());
-//            $lightVehicle->setEntrancePark($form->get("entrancePark")->getData());
-//            $lightVehicle->setExitPark($form->get("exitPark")->getData());
-//            $lightVehicle->setBrand($form->get("brand")->getData());
-//            $lightVehicle->setCategory($form->get("category")->getData());
-//            $lightVehicle->setBody($form->get("body")->getData());
-//
-//            $lightVehicle->setPneusMarqueAV($form->get("pneusMarqueAV")->getData());
-//            $lightVehicle->setPneusMarqueAR($form->get("pneusMarqueAR")->getData());
-//            $lightVehicle->setPneusDimensionAV($form->get("pneusDimensionAV")->getData());
-//            $lightVehicle->setPneusDimensionAR($form->get("pneusDimensionAR")->getData());
-//
-//            $lightVehicle->setIsArchive(0);
-//
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->persist($lightVehicle);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('cardLightVehicle', array('numberPlate' => $lightVehicle->getNumberPlate()));
-//        }
-//        return $this->render('LightVehicles/cardLightVehicleEdit.html.twig', ['form' => $form->createView(), 'vehicle' => $lightVehicle, 'pictures' => $photo, 'rentals' => $rentals, 'rental' => $rental[0]]);
-//    }
+        $files = glob("Vehicles/".$numberPlate."/*.*");
+        $compteur = count($files);
+
+        if(empty($rental)){
+            $rental[0]['price'] = 0;
+            $rental[0]['startRental'] = '1900-01-01';
+            $rental[0]['endRental'] = '1900-01-01';
+            $rental[0]['status'] = 0;
+        }
+
+        $form = $this->createForm(LightVehiclesFormType::class, $lightVehicle);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $lightVehicle->setNumberPlate($form->get("numberPlate")->getData());
+            $lightVehicle->setNumberPlate($form->get("bodyType")->getData());
+            $lightVehicle->setNumberPlate($form->get("nbPlaces")->getData());
+            $lightVehicle->setNumberPlate($form->get("energy")->getData());
+            $lightVehicle->setNumberPlate($form->get("power")->getData());
+            $lightVehicle->setNumberPlate($form->get("weight")->getData());
+            $lightVehicle->setNumberPlate($form->get("emptyWeight")->getData());
+            $lightVehicle->setNumberPlate($form->get("km")->getData());
+            $lightVehicle->setNumberPlate($form->get("tireSizeAV")->getData());
+            $lightVehicle->setNumberPlate($form->get("tireSizeAR")->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($lightVehicle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('cardLightVehicleEdit', array('numberPlate' => $lightVehicle->getNumberPlate()));
+        }
+        return $this->render('LightVehicles/cardLightVehicleEdit.html.twig', ['vehicle' => $lightVehicle, "nbPictures" => $compteur, 'form' => $form->createView()]);
+    }
 
     /**
      * @Route("/vehicule/leger/document/suppression/{numberPlate}/{document}", name="deleteLVDocument")

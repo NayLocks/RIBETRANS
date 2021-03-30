@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ rental.vehicle.numberPlate }}{% endblock %}
+{% block pageTitle %}Fiche Véhicule > {{ rental.vehicle.numberPlate }}{% endblock %}
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="body">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#location">NOUVELLE LOCATION</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="location">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-12">
+                                        <div class="preview preview-pic tab-content">
+                                            {% set i = 0 %}
+                                            {% for picture in rental.vehicle.lVehiclesPictures %}
+                                                {% set i = i+1 %}
+                                                <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ rental.vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                                            {% endfor%}
+                                        </div>
+                                        <ul class="preview thumbnail nav nav-tabs">
+                                            {% set j = 0 %}
+                                            {% for picture in rental.vehicle.lVehiclesPictures %}
+                                                {% set j = j+1 %}
+                                                <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ rental.vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                                            {% endfor%}
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-9 col-lg-8 col-md-12">
+                                        <div class="product details">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-3">
+                                                    <h3 class="product-title mb-0">{{ rental.vehicle.numberPlate }}</h3>
+                                                    <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ rental.company.name }}</span></h5>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <strong>Récap Location Actuel :</strong><br><br>
+                                                        Location en cours : <strong>{{ rentalStatus[rental.status] }}</strong><br>
+                                                        Début du contrat : <strong>{% if rental.startRental|date('d/m/Y') != "01/01/1900" %}{{ rental.startRental|date('d/m/Y') }}{% endif %}</strong><br>
+                                                        Fin du contrat : <strong>{% if rental.endRental|date('d/m/Y') != "01/01/1900" %}{{ rental.endRental|date('d/m/Y') }}{% endif %}</strong><br>
+                                                        Tarif : <strong>{{ rental.price }}</strong><strong> €</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        {{ form_start(form) }}
+                                                        {{ form_end(form) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div
+{% endblock %}

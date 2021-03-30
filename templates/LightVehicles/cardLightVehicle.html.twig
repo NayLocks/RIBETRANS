@@ -10,7 +10,6 @@
           <div class="body">
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#vehicle">INFORMATION GENERALE</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#carteGrise">CARTE GRISE</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#documents">DOCUMENTS</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#location">LOCATIONS</a></li>
               {#              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#entretien">ENTRETIENS</a></li>#}
@@ -38,6 +37,7 @@
                         <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
                       {% endfor%}
                     </ul>
+                    <a href="{{ path('cardLightVehicleEdit', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">MODIFIER {{ vehicle.numberPlate }}</a>
                   </div>
                   <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="product details">
@@ -52,8 +52,8 @@
                         <div class="col-sm-4">
                           <div class="form-group">
                             Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
-                            Entrée dans le parc : <strong>{{ vehicle.entrancePark|date('d/m/Y') }}</strong><br>
-                            Sortie du parc : <strong>{% if vehicle.exitPark|date('d/m/Y') != "01/01/1900" %}{{ vehicle.exitPark|date('d/m/Y') }}{% endif %}</strong><br>
+                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
+                            Type Carrosserie : <strong>{{ vehicle.bodyType }}</strong>
                           </div>
                         </div>
                         <div class="col-sm-4">
@@ -61,8 +61,36 @@
                             Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
                             Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
                             Catégorie : <strong {% if vehicle.category.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.category.name }}{% else %}>{{ vehicle.category.name }}{% endif %}</strong><br>
-                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
-                            Type Carrosserie : <strong>{{ vehicle.bodyType }}</strong>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Nombre de places : <strong>{{ vehicle.nbPlaces }}</strong><br>
+                            Energie : <strong>{{ vehicle.energy }}</strong><br>
+                            Puissance : <strong>{{ vehicle.power }}</strong><br>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Poids (PTAC) : <strong>{% if 'T' in vehicle.weight %}{{ vehicle.weight }}</strong>{% else %}{{ vehicle.weight }}</strong><strong> Kg</strong>{% endif %}<br>
+                            Poids à vide : <strong>{% if 'T' in vehicle.emptyWeight %}{{ vehicle.emptyWeight }}</strong>{% else %}{{ vehicle.emptyWeight }}</strong><strong> Kg</strong>{% endif %}<br>
+                            Dernier relevé : <strong>{{ vehicle.km }}</strong><strong> Km</strong><br>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Entrée dans le parc : <strong>{{ vehicle.entrancePark|date('d/m/Y') }}</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            Sortie du parc : <strong>{% if vehicle.exitPark|date('d/m/Y') != "01/01/1900" %}{{ vehicle.exitPark|date('d/m/Y') }}{% endif %}</strong>
                           </div>
                         </div>
                       </div>
@@ -72,14 +100,12 @@
                           <div class="form-group">
                             Location en cours : <strong>{{ rentalStatus[rental.status] }}</strong><br>
                             Début du contrat : <strong>{% if rental.startRental|date('d/m/Y') != "01/01/1900" %}{{ rental.startRental|date('d/m/Y') }}{% endif %}</strong><br>
-                            Fin du contrat : <strong>{% if rental.endRental|date('d/m/Y') != "01/01/1900" %}{{ rental.endRental|date('d/m/Y') }}{% endif %}</strong>
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="form-group">
                             Tarif : <strong>{{ rental.price }}</strong><strong> €</strong><br>
-                            Poids : <strong>{% if 'T' in vehicle.weight %}{{ vehicle.weight }}</strong>{% else %}{{ vehicle.weight }}</strong><strong> Kg</strong>{% endif %}<br>
-                            Dernier relevé : <strong>{{ vehicle.km }}</strong><strong> Km</strong><br>
+                            Fin du contrat : <strong>{% if rental.endRental|date('d/m/Y') != "01/01/1900" %}{{ rental.endRental|date('d/m/Y') }}{% endif %}</strong>
                           </div>
                         </div>
                       </div>
@@ -110,70 +136,6 @@
                         <div class="col-sm-4">
                           <div class="form-group">
                             Prochain contrôle technique : <strong>15/10/2021</strong>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="carteGrise">
-                <div class="row">
-                  <div class="col-xl-3 col-lg-4 col-md-12">
-                    <div class="preview preview-pic tab-content">
-                      {% set i = 0 %}
-                      {% for picture in vehicle.lVehiclesPictures %}
-                        {% set i = i+1 %}
-                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
-                      {% endfor%}
-                    </div>
-                    <ul class="preview thumbnail nav nav-tabs">
-                      {% set j = 0 %}
-                      {% for picture in vehicle.lVehiclesPictures %}
-                        {% set j = j+1 %}
-                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
-                      {% endfor%}
-                    </ul>
-                    {#                    <a href="{{ path('cardLightVehicleEdit', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">MODIFIER CARTE GRISE DE {{ vehicle.numberPlate }}</a>#}
-                  </div>
-                  <div class="col-xl-9 col-lg-8 col-md-12">
-                    <div class="product details">
-                      <div class="row clearfix">
-                        <div class="col-sm-3">
-                          <h3 class="product-title mb-0">{{ vehicle.numberPlate }}</h3>
-                          <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row clearfix">
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
-                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
-                            Type Carrosserie : <strong>{{ vehicle.bodyType }}</strong><br>
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
-                            Type : <strong>{{ vehicle.type.name }}</strong><br>
-                            Genre : <strong>{{ vehicle.kind.name }}</strong>
-                          </div>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row clearfix">
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            Nombre de places : <strong>{{ vehicle.nbPlaces }}</strong><br>
-                            Energie : <strong>{{ vehicle.energy }}</strong><br>
-                            Puissance : <strong>{{ vehicle.power }}</strong><br>
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            Poids (PTAC) : <strong>{% if 'T' in vehicle.weight %}{{ vehicle.weight }}</strong>{% else %}{{ vehicle.weight }}</strong><strong> Kg</strong>{% endif %}<br>
-                            Poids à vide : <strong>{% if 'T' in vehicle.emptyWeight %}{{ vehicle.emptyWeight }}</strong>{% else %}{{ vehicle.emptyWeight }}</strong><strong> Kg</strong>{% endif %}<br>
                           </div>
                         </div>
                       </div>
@@ -276,7 +238,7 @@
                         <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
                       {% endfor%}
                     </ul>
-{#                    <a href="{{ path('newRentalLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVELLE LOCATION</a>#}
+                    <a href="{{ path('newRentalLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVELLE LOCATION</a>
                   </div>
                   <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="table-responsive">
@@ -301,7 +263,7 @@
                             <td>{{ rental.endRental|date('d/m/Y') }}</td>
                             <td><strong>{{ rental.price }} €</strong></td>
                             <td>{{ rentalStatus2[rental.status] }}</td>
-                            <td><a href="{{ path('rentalPDF', { 'numberPlate': vehicle.numberPlate, 'id': rental.id }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">IMPRIMER CONTRAT</a></td>
+                            <td><a href="{{ path('LVrentalPDF', { 'numberPlate': vehicle.numberPlate, 'id': rental.id }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">IMPRIMER CONTRAT</a></td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -388,10 +350,4 @@
       </div>
     </div>
   </div>
-  </div>
-{% endblock %}
-
-
-{% block javascripts %}
-  <script src="{{ asset('vehicles/editablevehicle.js') }}"></script>
 {% endblock %}
