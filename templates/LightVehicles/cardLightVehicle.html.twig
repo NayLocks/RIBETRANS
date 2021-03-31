@@ -59,8 +59,9 @@
                         <div class="col-sm-4">
                           <div class="form-group">
                             Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
-                            Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
+                            Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.type.name }}{% else %}>{{ vehicle.type.name }}{% endif %}</strong><br>
                             Catégorie : <strong {% if vehicle.category.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.category.name }}{% else %}>{{ vehicle.category.name }}{% endif %}</strong><br>
+                            Genre : <strong {% if vehicle.kind.name == "NON RENSEIGNE" %}style="color: red;">{{ vehicle.kind.name }}{% else %}>{{ vehicle.kind.name }}{% endif %}</strong><br>
                           </div>
                         </div>
                       </div>

@@ -38,33 +38,48 @@
                   <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="product details">
                       <div class="row clearfix">
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                           {{ form_label(form.numberPlate) }}
                           {{ form_widget(form.numberPlate) }}
-                          <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
+                        </div>
+                        <div class="col-sm-6">
+                          {{ form_label(form.company) }}
+                          {{ form_widget(form.company) }}
                         </div>
                       </div>
                       <hr>
                       <div class="row clearfix">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Mise en circulation : <strong>{{ vehicle.putCirculation|date('d/m/Y') }}</strong><br>
-                            Carrosserie : <strong {% if vehicle.body.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.body.name }}{% else %}>{{ vehicle.body.name }}{% endif %}</strong><br>
+                            {{ form_label(form.putCirculation) }}
+                            {{ form_widget(form.putCirculation) }}
+                            <br>
+                            {{ form_label(form.body) }}
+                            {{ form_widget(form.body) }}
+                            <br>
                             {{ form_label(form.bodyType) }}
                             {{ form_widget(form.bodyType) }}
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Marque : <strong {% if vehicle.brand.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
-                            Type : <strong {% if vehicle.type.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.brand.name }}{% else %}>{{ vehicle.brand.name }}{% endif %}</strong><br>
-                            Catégorie : <strong {% if vehicle.category.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.category.name }}{% else %}>{{ vehicle.category.name }}{% endif %}</strong><br>
+                            {{ form_label(form.brand) }}
+                            {{ form_widget(form.brand) }}
+                            <br>
+                            {{ form_label(form.type) }}
+                            {{ form_widget(form.type) }}
+                            <br>
+                            {{ form_label(form.category) }}
+                            {{ form_widget(form.category) }}
+                            <br>
+                            {{ form_label(form.kind) }}
+                            {{ form_widget(form.kind) }}
                           </div>
                         </div>
                       </div>
                       <hr>
                       <div class="row clearfix">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             {{ form_label(form.nbPlaces) }}
                             {{ form_widget(form.nbPlaces) }}
@@ -76,7 +91,7 @@
                             {{ form_widget(form.power) }}
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             {{ form_label(form.weight) }}
                             {{ form_widget(form.weight) }}
@@ -91,31 +106,37 @@
                       </div>
                       <hr>
                       <div class="row clearfix">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Entrée dans le parc : <strong>{{ vehicle.entrancePark|date('d/m/Y') }}</strong>
+                            {{ form_label(form.entrancePark) }}
+                            {{ form_widget(form.entrancePark) }}
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Sortie du parc : <strong>{% if vehicle.exitPark|date('d/m/Y') != "01/01/1900" %}{{ vehicle.exitPark|date('d/m/Y') }}{% endif %}</strong>
+                            {{ form_label(form.exitPark) }}
+                            {{ form_widget(form.exitPark) }}
                           </div>
                         </div>
                       </div>
                       <hr>
                       <div class="row clearfix">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Pneus avant<br>
-                            Marque : <strong {% if vehicle.tireBrandsAV.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.tireBrandsAV.name }}{% else %}>{{ vehicle.tireBrandsAV.name }}{% endif %}</strong><br>
+                            Pneus avant<br><br>
+                            {{ form_label(form.tireBrandsAV) }}<br>
+                            {{ form_widget(form.tireBrandsAV) }}
+                            <br>
                             {{ form_label(form.tireSizeAV) }}
                             {{ form_widget(form.tireSizeAV) }}
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
-                            Pneus arrière<br>
-                            Marque : <strong {% if vehicle.tireBrandsAR.name == "NON RENSEIGNEE" %}style="color: red;">{{ vehicle.tireBrandsAR.name }}{% else %}>{{ vehicle.tireBrandsAR.name }}{% endif %}</strong><br>
+                            Pneus arrière<br><br>
+                            {{ form_label(form.tireBrandsAR) }}<br>
+                            {{ form_widget(form.tireBrandsAR) }}
+                            <br>
                             {{ form_label(form.tireSizeAR) }}
                             {{ form_widget(form.tireSizeAR) }}
                           </div>
@@ -123,12 +144,12 @@
                       </div>
                       <hr>
                       <div class="row clearfix">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             Dernier contrôle technique : <strong>15/10/2019</strong>
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             Prochain contrôle technique : <strong>15/10/2021</strong>
                           </div>

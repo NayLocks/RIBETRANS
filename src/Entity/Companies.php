@@ -84,6 +84,11 @@ class Companies
      */
     private $lVehiclesRentals;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVisible;
+
     public function __construct()
     {
         $this->lightVehicles = new ArrayCollection();
@@ -283,6 +288,18 @@ class Companies
                 $lVehiclesRental->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsVisible(): ?bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
 
         return $this;
     }
