@@ -125,39 +125,39 @@
             <tbody>
             {% for category in categories %}
                 {% if category.name != "NON RENSEIGNEE" %}
-                <tr style="border-top : 1px solid black">
-                    <td style="border-top: 1px solid black">Catégorie :</td>
-                    <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
-                    <td style="border-top: 1px solid black" colspan="4"></td>
-                    {% set ht = 0 %}
-                </tr>
-                {% for vehicle in vehicles %}
-                    {% if vehicle.category.name == category.name %}
-                        {% for rental in vehicle.lVehiclesRentals %}
-                            {% if rental.company.name == company.name and rental.status == 1 %}
-                                <tr>
-                                    <td>00</td>
-                                    <td>{{ vehicle.numberPlate }}</td>
-                                    <td>{{ vehicle.kind.name }}</td>
-                                    <td>{{ vehicle.brand.name }}</td>
-                                    <td>{{ vehicle.type.name }}</td>
-                                    <td>{{ rental.price }} €</td>
-                                    {% set ht = ht + rental.price %}
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-                <tr>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td style="border-top: 1px solid black"><strong>Total :</strong></td>
-                    <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
-                    <td style="border-top: 1px solid black"><strong>{{ ht }} €</strong></td>
-                </tr>
-                {% set htTotal = htTotal + ht %}
+                    <tr style="border-top : 1px solid black">
+                        <td style="border-top: 1px solid black">Catégorie :</td>
+                        <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
+                        <td style="border-top: 1px solid black" colspan="4"></td>
+                        {% set ht = 0 %}
+                    </tr>
+                    {% for vehicle in vehicles %}
+                        {% if vehicle.category.name == category.name %}
+                            {% for rental in vehicle.lVehiclesRentals %}
+                                {% if rental.company.name == company.name and rental.status == 1 %}
+                                    <tr>
+                                        <td>00</td>
+                                        <td>{{ vehicle.numberPlate }}</td>
+                                        <td>{{ vehicle.kind.name }}</td>
+                                        <td>{{ vehicle.brand.name }}</td>
+                                        <td>{{ vehicle.type.name }}</td>
+                                        <td>{{ rental.price }} €</td>
+                                        {% set ht = ht + rental.price %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td style="border-top: 1px solid black"><strong>Total :</strong></td>
+                        <td style="border-top: 1px solid black"><strong>{{ category.name }}</strong></td>
+                        <td style="border-top: 1px solid black"><strong>{{ ht }} €</strong></td>
+                    </tr>
+                    {% set htTotal = htTotal + ht %}
                 {% endif %}
             {% endfor %}
             </tbody>
