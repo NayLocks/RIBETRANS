@@ -47,13 +47,19 @@
         <div class="menu">
             <ul class="list">
                 <li><a href="{{ path('dashboard') }}"><i class="zmdi zmdi-home"></i><span>Tableau de Bord</span></a></li>
+                <li class="open_top"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-account-add"></i><span>Nouveau Véhicules</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="{{ path('cardLightVehicleAdd') }}">Véhicules Légers</a></li>
+                        <li><a href="#">Poids Lourds</a></li>
+                    </ul>
+                </li>
                 <li class="open_top"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-truck"></i><span>Inventaire parc</span></a>
                     <ul class="ml-menu">
                         <li><a href="{{ path('lightVehicles') }}">Véhicules Légers</a></li>
                         <li><a href="#">Poids Lourds</a></li>
                     </ul>
                 </li>
-                <li class="open_top"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-truck"></i><span>Facturation</span></a>
+                <li class="open_top"><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-list"></i><span>Facturation</span></a>
                     <ul class="ml-menu">
                         <li><a href="{{ path('facturePDF') }}">Location du mois en cours</a></li>
                     </ul>

@@ -144,11 +144,17 @@ class LightVehicles
      */
     private $lVehiclesRentals;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LVehiclesMaintenances::class, mappedBy="vehicle")
+     */
+    private $lVehiclesMaintenances;
+
     public function __construct()
     {
         $this->lVehiclesPictures = new ArrayCollection();
         $this->lVehiclesDocuments = new ArrayCollection();
         $this->lVehiclesRentals = new ArrayCollection();
+        $this->lVehiclesMaintenances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -504,6 +510,36 @@ class LightVehicles
             // set the owning side to null (unless already changed)
             if ($lVehiclesRental->getVehicle() === $this) {
                 $lVehiclesRental->setVehicle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LVehiclesMaintenances[]
+     */
+    public function getLVehiclesMaintenances(): Collection
+    {
+        return $this->lVehiclesMaintenances;
+    }
+
+    public function addLVehiclesMaintenance(LVehiclesMaintenances $lVehiclesMaintenance): self
+    {
+        if (!$this->lVehiclesMaintenances->contains($lVehiclesMaintenance)) {
+            $this->lVehiclesMaintenances[] = $lVehiclesMaintenance;
+            $lVehiclesMaintenance->setVehicle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLVehiclesMaintenance(LVehiclesMaintenances $lVehiclesMaintenance): self
+    {
+        if ($this->lVehiclesMaintenances->removeElement($lVehiclesMaintenance)) {
+            // set the owning side to null (unless already changed)
+            if ($lVehiclesMaintenance->getVehicle() === $this) {
+                $lVehiclesMaintenance->setVehicle(null);
             }
         }
 

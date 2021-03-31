@@ -89,10 +89,16 @@ class Companies
      */
     private $isVisible;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LVehiclesMaintenances::class, mappedBy="company")
+     */
+    private $lVehiclesMaintenances;
+
     public function __construct()
     {
         $this->lightVehicles = new ArrayCollection();
         $this->lVehiclesRentals = new ArrayCollection();
+        $this->lVehiclesMaintenances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -300,6 +306,36 @@ class Companies
     public function setIsVisible(bool $isVisible): self
     {
         $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LVehiclesMaintenances[]
+     */
+    public function getLVehiclesMaintenances(): Collection
+    {
+        return $this->lVehiclesMaintenances;
+    }
+
+    public function addLVehiclesMaintenance(LVehiclesMaintenances $lVehiclesMaintenance): self
+    {
+        if (!$this->lVehiclesMaintenances->contains($lVehiclesMaintenance)) {
+            $this->lVehiclesMaintenances[] = $lVehiclesMaintenance;
+            $lVehiclesMaintenance->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLVehiclesMaintenance(LVehiclesMaintenances $lVehiclesMaintenance): self
+    {
+        if ($this->lVehiclesMaintenances->removeElement($lVehiclesMaintenance)) {
+            // set the owning side to null (unless already changed)
+            if ($lVehiclesMaintenance->getCompany() === $this) {
+                $lVehiclesMaintenance->setCompany(null);
+            }
+        }
 
         return $this;
     }

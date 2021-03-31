@@ -66,12 +66,61 @@ class LightVehiclesController extends AbstractController
     }
 
     /**
+     * @Route("/Vehicles/leger/nouveau}", name="cardLightVehicleAdd")
+     */
+    public function ficheVehiculeAjout(Request $request)
+    {
+
+        $form = $this->createForm(LightVehiclesFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $lightVehicle = new LightVehicles();
+
+            $lightVehicle->setNumberPlate($form->get('numberPlate')->getData());
+            $lightVehicle->setCompany($form->get('company')->getData());
+            $lightVehicle->setPutCirculation($form->get('putCirculation')->getData());
+            $lightVehicle->setBody($form->get('body')->getData());
+            $lightVehicle->setBodyType($form->get('bodyType')->getData());
+            $lightVehicle->setBrand($form->get('brand')->getData());
+            $lightVehicle->setType($form->get('type')->getData());
+            $lightVehicle->setCategory($form->get('category')->getData());
+            $lightVehicle->setKind($form->get('kind')->getData());
+
+            $lightVehicle->setNbPlaces($form->get('nbPlaces')->getData());
+            $lightVehicle->setEnergy($form->get('energy')->getData());
+            $lightVehicle->setPower($form->get('power')->getData());
+            $lightVehicle->setWeight($form->get('weight')->getData());
+            $lightVehicle->setEmptyWeight($form->get('emptyWeight')->getData());
+            $lightVehicle->setKm($form->get('km')->getData());
+
+            $lightVehicle->setEntrancePark($form->get('entrancePark')->getData());
+            $lightVehicle->setExitPark($form->get('exitPark')->getData());
+
+            $lightVehicle->setTireBrandsAV($form->get('tireBrandsAV')->getData());
+            $lightVehicle->setTireSizeAV($form->get('tireSizeAV')->getData());
+            $lightVehicle->setTireBrandsAR($form->get('tireBrandsAR')->getData());
+            $lightVehicle->setTireSizeAR($form->get('tireSizeAR')->getData());
+            $lightVehicle->setIsArchived(0);
+
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($lightVehicle);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('cardLightVehicle', array('numberPlate' => $lightVehicle->getNumberPlate()));
+        }
+        return $this->render('LightVehicles/cardLightVehicleAdd.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    /**
      * @Route("/Vehicles/leger/modification/{numberPlate}", name="cardLightVehicleEdit")
      */
     public function ficheVehiculeModif(Request $request, $numberPlate)
     {
         $allLightVehicles = $this->getDoctrine()->getRepository(LightVehicles::class);
-        $lightVehicle = $allLightVehicles->findOneBy(array('numberPlate' => $numberPlate ));
+        $lightVehicle = $allLightVehicles->findOneBy(array('numberPlate' => $numberPlate));
 
         $files = glob("Vehicles/".$numberPlate."/*.*");
         $compteur = count($files);
@@ -88,22 +137,36 @@ class LightVehiclesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $lightVehicle->setNumberPlate($form->get("numberPlate")->getData());
-            $lightVehicle->setNumberPlate($form->get("bodyType")->getData());
-            $lightVehicle->setNumberPlate($form->get("nbPlaces")->getData());
-            $lightVehicle->setNumberPlate($form->get("energy")->getData());
-            $lightVehicle->setNumberPlate($form->get("power")->getData());
-            $lightVehicle->setNumberPlate($form->get("weight")->getData());
-            $lightVehicle->setNumberPlate($form->get("emptyWeight")->getData());
-            $lightVehicle->setNumberPlate($form->get("km")->getData());
-            $lightVehicle->setNumberPlate($form->get("tireSizeAV")->getData());
-            $lightVehicle->setNumberPlate($form->get("tireSizeAR")->getData());
+            $lightVehicle->setNumberPlate($form->get('numberPlate')->getData());
+            $lightVehicle->setCompany($form->get('company')->getData());
+            $lightVehicle->setPutCirculation($form->get('putCirculation')->getData());
+            $lightVehicle->setBody($form->get('body')->getData());
+            $lightVehicle->setBodyType($form->get('bodyType')->getData());
+            $lightVehicle->setBrand($form->get('brand')->getData());
+            $lightVehicle->setType($form->get('type')->getData());
+            $lightVehicle->setCategory($form->get('category')->getData());
+            $lightVehicle->setKind($form->get('kind')->getData());
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($lightVehicle);
-            $entityManager->flush();
+            $lightVehicle->setNbPlaces($form->get('nbPlaces')->getData());
+            $lightVehicle->setEnergy($form->get('energy')->getData());
+            $lightVehicle->setPower($form->get('power')->getData());
+            $lightVehicle->setWeight($form->get('weight')->getData());
+            $lightVehicle->setEmptyWeight($form->get('emptyWeight')->getData());
+            $lightVehicle->setKm($form->get('km')->getData());
 
-            return $this->redirectToRoute('cardLightVehicleEdit', array('numberPlate' => $lightVehicle->getNumberPlate()));
+            $lightVehicle->setEntrancePark($form->get('entrancePark')->getData());
+            $lightVehicle->setExitPark($form->get('exitPark')->getData());
+
+            $lightVehicle->setTireBrandsAV($form->get('tireBrandsAV')->getData());
+            $lightVehicle->setTireSizeAV($form->get('tireSizeAV')->getData());
+            $lightVehicle->setTireBrandsAR($form->get('tireBrandsAR')->getData());
+            $lightVehicle->setTireSizeAR($form->get('tireSizeAR')->getData());
+
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($lightVehicle);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('cardLightVehicle', array('numberPlate' => $lightVehicle->getNumberPlate()));
         }
         return $this->render('LightVehicles/cardLightVehicleEdit.html.twig', ['vehicle' => $lightVehicle, "nbPictures" => $compteur, 'form' => $form->createView()]);
     }

@@ -12,7 +12,7 @@
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#vehicle">INFORMATION GENERALE</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#documents">DOCUMENTS</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#location">LOCATIONS</a></li>
-              {#              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#entretien">ENTRETIENS</a></li>#}
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#entretiens">ENTRETIENS</a></li>
               {#              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photos">GESTION DES PHOTOS</a></li>#}
             </ul>
           </div>
@@ -42,7 +42,7 @@
                   <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="product details">
                       <div class="row clearfix">
-                        <div class="col-sm-3">
+                        <div class="col-sm-12">
                           <h3 class="product-title mb-0">{{ vehicle.numberPlate }}</h3>
                           <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
                         </div>
@@ -273,78 +273,63 @@
                   </div>
                 </div>
               </div>
-              {#              <div class="tab-pane" id="entretien">#}
-              {#                <a href="{{ path('newMaintenanceLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 20%; font-size: 15px; float: right;">AJOUTER UN ENTRETIEN</a>#}
-              {#                <div class="table-responsive">#}
-              {#                  <table class="table table-hover product_item_list c_table theme-color mb-0">#}
-              {#                    <thead>#}
-              {#                    <tr>#}
-              {#                      <th>SOCIETE</th>#}
-              {#                      <th>CHAUFFEUR</th>#}
-              {#                      <th>INTERVENANT</th>#}
-              {#                      <th>ENTREE</th>#}
-              {#                      <th>SORTIE</th>#}
-              {#                      <th>KM</th>#}
-              {#                      <th>INTERVENTION</th>#}
-              {#                      <th>QTE</th>#}
-              {#                      <th>MT UNIT</th>#}
-              {#                      <th>TOTAL</th>#}
-              {#                    </tr>#}
-              {#                    </thead>#}
-              {#                    <tbody>#}
-              {#                    {% for maintenance in maintenances %}#}
-              {#                      <tr>#}
-              {#                        <td><strong>{{ maintenance.company.name }}</strong></td>#}
-              {#                        <td>{{ maintenance.driver }}</td>#}
-              {#                        <td><strong>{{ maintenance.participant.firstname }} {{ maintenance.participant.lastname }}</strong></td>#}
-              {#                        <td></td>#}
-              {#                        <td>{{ maintenance.entranceMaintenance|date('d/m/Y') }}</td>#}
-              {#                        <td>{{ maintenance.exitMaintenance|date('d/m/Y') }}</td>#}
-              {#                        <td>{{ maintenance.km }} Km</td>#}
-              {#                        <td>{{ maintenance.maintenance }}</td>#}
-              {#                        <td>{{ maintenance.quantity }}</td>#}
-              {#                        <td>{{ maintenance.priceUnit }} €</td>#}
-              {#                        <td>{{ maintenance.total }} €</td>#}
-              {#                      </tr>#}
-              {#                    {% endfor %}#}
-              {#                    </tbody>#}
-              {#                  </table>#}
-              {#                </div>#}
-              {#              </div>#}
-              {#              <div class="tab-pane" id="photos">#}
-              {#                <div class="container-fluid file_manager">#}
-              {#                  <div class="row clearfix">#}
-              {#                    <div class="col-lg-12">#}
-              {#                      <div class="card">#}
-              {#                        <div class="tab-content">#}
-              {#                          <div class="row clearfix">#}
-              {#                            {% for picture in pictures %}#}
-              {#                              <div class="col-lg-3 col-md-4 col-sm-12">#}
-              {#                                <div class="card">#}
-              {#                                  <div class="file" style="background-color: lightgray;">#}
-              {#                                      <div class="hover">#}
-              {#                                        <a class="btn btn-icon btn-icon-mini btn-round btn-danger" href="{{ path('deletePicture', { 'numberPlate': vehicle.numberPlate, 'picture': picture.id }) }}">#}
-              {#                                          <i class="zmdi zmdi-delete"></i>#}
-              {#                                        </a>#}
-              {#                                      </div>#}
-              {#                                      <div class="image" style="background-color: lightgray;">#}
-              {#                                        <img src="{{ asset('Vehicles/' ~ vehicle.numberPlate ~ "/" ~ picture.path) }}" alt="img" class="img-fluid">#}
-              {#                                      </div>#}
-              {#                                      <div class="file-name">#}
-              {#                                        <p class="m-b-5 text-muted">{{ picture.path }}</p>#}
-              {#                                        <small>Size: 2MB <span class="date">{{ picture.dateCreate|date('d/m/Y') }}</span></small>#}
-              {#                                      </div>#}
-              {#                                  </div>#}
-              {#                                </div>#}
-              {#                              </div>#}
-              {#                            {% endfor %}#}
-              {#                          </div>#}
-              {#                        </div>#}
-              {#                      </div>#}
-              {#                    </div>#}
-              {#                  </div>#}
-              {#                </div>#}
-              {#              </div>#}
+              <div class="tab-pane" id="entretiens">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                      {% set i = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set i = i+1 %}
+                        <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                      {% endfor%}
+                    </div>
+                    <ul class="preview thumbnail nav nav-tabs">
+                      {% set j = 0 %}
+                      {% for picture in vehicle.LVehiclesPictures %}
+                        {% set j = j+1 %}
+                        <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                      {% endfor%}
+                    </ul>
+                    <a href="#" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVEL ENTRETIEN</a>
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="table-responsive">
+                      <table class="table table-hover product_item_list c_table theme-color mb-0">
+                        <thead>
+                        <tr>
+                          <th>SOCIETE</th>
+                          <th>CHAUFFEUR</th>
+                          <th>INTERVENANT</th>
+                          <th>ENTREE</th>
+                          <th>SORTIE</th>
+                          <th>KM</th>
+                          <th>INTERVENTION</th>
+                          <th>QUANTITE</th>
+                          <th>PRIX UNITE</th>
+                          <th>TOTAL</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for maintenance in vehicle.LVehiclesMaintenances %}
+                          <tr>
+                            <td><strong>{{ maintenance.company.name }}</strong></td>
+                            <td><strong>{{ maintenance.driver }}</strong></td>
+                            <td><strong>{{ maintenance.intervenant }}</strong></td>
+                            <td>{{ maintenance.entrance|date('d/m/Y') }}</td>
+                            <td>{{ maintenance.exitRT|date('d/m/Y') }}</td>
+                            <td>{{ maintenance.km }}</td>
+                            <td style="white-space: normal">{{ maintenance.intervention }}</td>
+                            <td>{{ maintenance.quantite }}</td>
+                            <td>{{ maintenance.priceUnit }} € </td>
+                            <td>{{ maintenance.total }} €</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

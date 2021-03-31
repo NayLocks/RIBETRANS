@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouveau Véhicules{% endblock %}
+{% block pageTitle %}Fiche Véhicule > NOUVEAU{% endblock %}
+{% block body %}
+  {{ form_start(form) }}
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="body">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#vehicle">AJOUTER LE VEHICULE</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="vehicle">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="preview preview-pic tab-content">
+                        <div class="tab-pane active" id="product_1"><img src="{{ asset('img/societes/RIBETRANS.jpg') }}" class="img-fluid" alt=""/></div>
+                    </div>
+                    {{ form_widget(form.valider) }}
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-md-12">
+                    <div class="product details">
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          {{ form_label(form.numberPlate) }}
+                          {{ form_widget(form.numberPlate) }}
+                        </div>
+                        <div class="col-sm-6">
+                          {{ form_label(form.company) }}
+                          {{ form_widget(form.company) }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.putCirculation) }}
+                            {{ form_widget(form.putCirculation) }}
+                            <br>
+                            {{ form_label(form.body) }}
+                            {{ form_widget(form.body) }}
+                            <br>
+                            {{ form_label(form.bodyType) }}
+                            {{ form_widget(form.bodyType) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.brand) }}
+                            {{ form_widget(form.brand) }}
+                            <br>
+                            {{ form_label(form.type) }}
+                            {{ form_widget(form.type) }}
+                            <br>
+                            {{ form_label(form.category) }}
+                            {{ form_widget(form.category) }}
+                            <br>
+                            {{ form_label(form.kind) }}
+                            {{ form_widget(form.kind) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.nbPlaces) }}
+                            {{ form_widget(form.nbPlaces) }}
+
+                            {{ form_label(form.energy) }}
+                            {{ form_widget(form.energy) }}
+
+                            {{ form_label(form.power) }}
+                            {{ form_widget(form.power) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.weight) }}
+                            {{ form_widget(form.weight) }}
+
+                            {{ form_label(form.emptyWeight) }}
+                            {{ form_widget(form.emptyWeight) }}
+
+                            {{ form_label(form.km) }}
+                            {{ form_widget(form.km) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.entrancePark) }}
+                            {{ form_widget(form.entrancePark) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            {{ form_label(form.exitPark) }}
+                            {{ form_widget(form.exitPark) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            Pneus avant<br><br>
+                            {{ form_label(form.tireBrandsAV) }}<br>
+                            {{ form_widget(form.tireBrandsAV) }}
+                            <br>
+                            {{ form_label(form.tireSizeAV) }}
+                            {{ form_widget(form.tireSizeAV) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            Pneus arrière<br><br>
+                            {{ form_label(form.tireBrandsAR) }}<br>
+                            {{ form_widget(form.tireBrandsAR) }}
+                            <br>
+                            {{ form_label(form.tireSizeAR) }}
+                            {{ form_widget(form.tireSizeAR) }}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            Dernier contrôle technique : <strong>15/10/2019</strong>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            Prochain contrôle technique : <strong>15/10/2021</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_end(form) }}
+{% endblock %}

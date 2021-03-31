@@ -53,6 +53,7 @@ class LightVehiclesFormType extends AbstractType
             ->add('exitPark', DateType::class, array(
                 'label' => "Sortie du parc :",
                 'widget' => 'single_text',
+                'required' => false,
                 'html5' => false,
                 'format' => 'dd/MM/yyyy',
                 'attr' => ['class' => 'form-control date']))
