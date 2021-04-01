@@ -76,6 +76,9 @@ class LightVehiclesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            mkdir("Vehicles/".$form->get('numberPlate')->getData(), 0700);
+            mkdir("Vehicles/".$form->get('numberPlate')->getData()."/documents", 0700);
+
             $lightVehicle = new LightVehicles();
 
             $lightVehicle->setNumberPlate($form->get('numberPlate')->getData());
