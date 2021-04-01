@@ -290,7 +290,7 @@
                         <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
                       {% endfor%}
                     </ul>
-                    <a href="#" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVEL ENTRETIEN</a>
+                    <a href="{{ path('newMaintenanceLV', { 'numberPlate': vehicle.numberPlate }) }}" class="btn btn-default btn-round" style="width: 100%; font-size: 15px;">NOUVEL ENTRETIEN</a>
                   </div>
                   <div class="col-xl-9 col-lg-8 col-md-12">
                     <div class="table-responsive">

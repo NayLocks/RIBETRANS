@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ vehicle.numberPlate }}{% endblock %}
+{% block pageTitle %}Fiche Véhicule > {{ vehicle.numberPlate }}{% endblock %}
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="body">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#location">NOUVELLE LOCATION</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="body">
+                        <div class="tab-content">
+                            {{ form_start(form) }}
+                            <div class="tab-pane active" id="location">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-12">
+                                        <div class="preview preview-pic tab-content">
+                                            {% set i = 0 %}
+                                            {% for picture in vehicle.lVehiclesPictures %}
+                                                {% set i = i+1 %}
+                                                <div class="tab-pane {% if i == 1 %}active{% endif %}" id="product_{{ i }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" class="img-fluid" alt=""/></div>
+                                            {% endfor%}
+                                        </div>
+                                        <ul class="preview thumbnail nav nav-tabs">
+                                            {% set j = 0 %}
+                                            {% for picture in vehicle.lVehiclesPictures %}
+                                                {% set j = j+1 %}
+                                                <li class="nav-item"><a class="nav-link {% if j == 1 %}active{% endif %}" data-toggle="tab" href="#product_{{ j }}"><img src="{{ asset('Vehicles/'~ vehicle.numberPlate ~'/'~ picture.path) }}" alt=""/></a></li>
+                                            {% endfor%}
+                                        </ul>
+                                        {{ form_widget(form.valider) }}
+                                    </div>
+                                    <div class="col-xl-9 col-lg-8 col-md-12">
+                                        <div class="product details">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-12">
+                                                    <h3 class="product-title mb-0">{{ vehicle.numberPlate }}</h3>
+                                                    <h5 class="price mt-0">Société: <span class="col-amber" id="societe">{{ vehicle.company.name }}</span></h5>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.driver) }}
+                                                        {{ form_widget(form.driver) }}
+                                                        <br>
+                                                        {{ form_label(form.intervenant) }}
+                                                        {{ form_widget(form.intervenant) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.entrance) }}
+                                                        {{ form_widget(form.entrance) }}
+                                                        <br>
+                                                        {{ form_label(form.exitRT) }}
+                                                        {{ form_widget(form.exitRT) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.priceUnit) }}
+                                                        {{ form_widget(form.priceUnit) }}
+                                                        <br>
+                                                        {{ form_label(form.quantite) }}
+                                                        {{ form_widget(form.quantite) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.total) }}
+                                                        {{ form_widget(form.total) }}
+                                                        <br>
+                                                        {{ form_label(form.km) }}
+                                                        {{ form_widget(form.km) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.intervention) }}
+                                                        {{ form_widget(form.intervention) }}
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div
+{% endblock %}
