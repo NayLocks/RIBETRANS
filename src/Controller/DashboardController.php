@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Companies;
+use SoapClient;
+use SoapFault;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

@@ -61,6 +61,7 @@
 
 <body>
 {% for company in companies %}
+    {% if company.id != 1 %}
     {% set htTotal = 0 %}
     <div class="section section{{ nbSection }}">
         <div id="header">
@@ -94,7 +95,7 @@
             </div>
 
             <div style="float: right">
-                <strong>{{ startDay }} {{ startMonth }} {{ monthFormat[month] }} {{ year }}</strong><br>
+                <strong>{{ startDay }} 01 {{ monthFormat[month] }} {{ year }}</strong><br>
                 <strong>{{ endDay }} {{ endMonth }} {{ monthFormat[month] }} {{ year }}</strong>
             </div>
             <div style="float: right; padding-left: 5px; padding-right: 5px;">
@@ -183,6 +184,7 @@
         </table>
     </div>
     <hr>
+{% endif %}
 {% endfor %}
 </body>
 </html>

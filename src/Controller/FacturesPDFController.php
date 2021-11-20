@@ -42,19 +42,18 @@ class FacturesPDFController extends AbstractController
         $startDay = $jour[date("w", mktime(0, 0, 0, $month, 1, $year))];
         $endDay = $jour[date("w", mktime(0, 0, 0, $month+1, 0, $year))];
 
-        $startMonth = $jour[date("w", mktime(0, 0, 0, 03, 1, 2021))];
-        $endMonth = $jour[date("w", mktime(0, 0, 0, $month+1, 0, $year))];
+        $endMonth =  date("d", mktime(0, 0, 0, $month+1, 0, $year));
 
         $pdfOptions = new Options();
         $pdfOptions->set('isHtml5ParserEnabled', 'true');
         $pdfOptions->set('enable_remote', true);
         $dompdf = new Dompdf($pdfOptions);
-        $html = $this->renderView('pdf_twig/facture.html.twig', ['companies' => $companies, 'categories' => $categories, 'vehicles' => $vehicles, 'startMonth' => $startMonth, 'endMonth' => $endMonth, 'startDay' => $startDay, 'endDay' => $endDay, 'month' => $month, 'year' => $year ]);
+        $html = $this->renderView('pdf_twig/facture.html.twig', ['companies' => $companies, 'categories' => $categories, 'vehicles' => $vehicles,'endMonth' => $endMonth, 'startDay' => $startDay, 'endDay' => $endDay, 'month' => $month, 'year' => $year ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $output = $dompdf->output();
-        $pdfFilepath =  'TEST_FACTURE.pdf';
+        $pdfFilepath =  'Factures/'.$month.'_'.$year.'.pdf';
         file_put_contents($pdfFilepath, $output);
 
         return $this->redirect('/'.$pdfFilepath);
